@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>田島 | SEOライター</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Noto+Sans+JP:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --white: #FFFFFF;
+    --off-white: #F8F9F7;
+    --light-gray: #F0F2EE;
+    --yellow: #F5E840;
+    --yellow-light: #FBF7B0;
+    --yellow-pale: #FEFCE8;
+    --green: #1F7A30;
+    --green-mid: #2E9B40;
+    --green-light: #4DBE60;
+    --green-pale: #E8F5EB;
+    --dark: #111C12;
+    --text: #1E2B1F;
+    --text-muted: #5A6B5C;
+    --border: rgba(31, 122, 48, 0.14);
+    --border-strong: rgba(31, 122, 48, 0.28);
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--white); color: var(--text); font-family: 'Noto Sans JP', sans-serif; font-weight: 300; line-height: 1.8; overflow-x: hidden; }
+
+  /* ──────────────────────────
+     NAV — 左: ロゴ / 右: リンク（Z動線の上辺）
+  ────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.1rem 4rem;
+    background: rgba(255,255,255,0.93);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; font-weight: 400; letter-spacing: 0.12em;
+    color: var(--green);
+  }
+  .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none; font-size: 0.75rem; letter-spacing: 0.18em;
+    color: var(--text-muted); font-weight: 500; transition: color 0.25s;
+  }
+  .nav-links a:hover { color: var(--green); }
+
+  /* ──────────────────────────
+     HERO — Z動線: 左上にキャッチ → 右上に写真 → 左下に詳細 → 右下にCTA
+  ────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 0;
+    padding: 8rem 4rem 5rem;
+    position: relative;
+    overflow: hidden;
+    background: var(--white);
+    align-items: center;
+  }
+  /* 右上の黄色アクセント帯 */
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 42%; height: 100%;
+    background: var(--yellow-pale);
+    z-index: 0;
+  }
+  /* 緑のアクセントライン（上部） */
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--green) 0%, var(--yellow) 100%);
+    z-index: 10;
+  }
+
+  /* 左上: キャッチコピー（Z動線 ①） */
+  .hero-left-top {
+    position: relative; z-index: 2;
+    padding-right: 3rem;
+    grid-column: 1; grid-row: 1;
+  }
+  .hero-label {
+    font-size: 0.7rem; letter-spacing: 0.35em; color: var(--green);
+    text-transform: uppercase; margin-bottom: 1.2rem;
+    display: flex; align-items: center; gap: 0.8rem; font-weight: 500;
+  }
+  .hero-label::before {
+    content: ''; display: inline-block;
+    width: 32px; height: 2px; background: var(--green);
+  }
+  .hero-name {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(3rem, 6vw, 5.2rem);
+    font-weight: 600; line-height: 1.1;
+    color: var(--dark); letter-spacing: 0.04em;
+    margin-bottom: 0.4rem;
+  }
+  .hero-name-en {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; color: var(--green);
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    font-weight: 300; letter-spacing: 0.12em;
+    display: block; margin-bottom: 1.8rem;
+  }
+
+  /* 右上: プロフィール写真（Z動線 ②） */
+  .hero-right-top {
+    position: relative; z-index: 2;
+    grid-column: 2; grid-row: 1;
+    display: flex; justify-content: center; align-items: center;
+  }
+  .hero-photo-wrap {
+    width: 280px; height: 280px; position: relative;
+  }
+  .hero-photo-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -12px;
+    border-radius: 50%;
+    border: 2px solid var(--yellow);
+    z-index: 0;
+  }
+  .hero-photo-wrap::after {
+    content: '';
+    position: absolute;
+    inset: -24px;
+    border-radius: 50%;
+    border: 1px solid rgba(31,122,48,0.2);
+    z-index: 0;
+  }
+  .hero-photo {
+    width: 280px; height: 280px; border-radius: 50%;
+    object-fit: cover; object-position: center;
+    border: 3px solid var(--green-light);
+    display: block; position: relative; z-index: 1;
+  }
+  .hero-photo-placeholder {
+    width: 280px; height: 280px; border-radius: 50%;
+    background: var(--green-pale);
+    border: 2px dashed var(--green-mid);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 0.5rem; color: var(--text-muted); font-size: 0.78rem;
+    letter-spacing: 0.08em; text-align: center; line-height: 1.6;
+    position: relative; z-index: 1;
+  }
+  .hero-photo-placeholder span { font-size: 2.2rem; display: block; }
+
+  /* 左下: キャッチコピー詳細（Z動線 ③） */
+  .hero-left-bottom {
+    position: relative; z-index: 2;
+    grid-column: 1; grid-row: 2;
+    padding-right: 3rem; padding-top: 2rem;
+  }
+  .hero-tagline {
+    font-size: 1rem; color: var(--text); margin-bottom: 1.4rem;
+    font-weight: 300; line-height: 2; max-width: 460px;
+  }
+  .hero-tagline strong { color: var(--green); font-weight: 700; }
+  .hero-highlight {
+    display: inline-block;
+    background: var(--yellow);
+    color: var(--dark);
+    font-weight: 700; font-size: 0.88rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 2px;
+    margin-bottom: 1.8rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* 右下: CTA（Z動線 ④） */
+  .hero-right-bottom {
+    position: relative; z-index: 2;
+    grid-column: 2; grid-row: 2;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: flex-start;
+    padding-top: 2rem; gap: 1rem;
+  }
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 0.7rem;
+    padding: 1rem 2.6rem;
+    background: var(--green); color: #fff;
+    text-decoration: none; font-size: 0.86rem;
+    letter-spacing: 0.15em; font-weight: 500;
+    border-radius: 3px; transition: all 0.3s;
+    width: 100%; max-width: 300px; justify-content: center;
+  }
+  .hero-cta:hover { background: var(--green-mid); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(31,122,48,0.25); }
+  .hero-cta-sub {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 0.8rem; color: var(--text-muted);
+    text-decoration: none; transition: color 0.25s;
+    width: 100%; max-width: 300px; justify-content: center;
+    padding: 0.7rem 2rem;
+    border: 1px solid var(--border-strong);
+    border-radius: 3px;
+  }
+  .hero-cta-sub:hover { color: var(--green); border-color: var(--green); }
+
+  /* SECTIONS 共通 */
+  section { padding: 6rem 4rem; }
+  .section-inner { max-width: 960px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.68rem; letter-spacing: 0.38em; color: var(--green);
+    text-transform: uppercase; margin-bottom: 0.7rem;
+    display: flex; align-items: center; gap: 0.7rem; font-weight: 500;
+  }
+  .section-label::before {
+    content: ''; display: inline-block;
+    width: 22px; height: 2px; background: var(--green);
+  }
+  .section-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+    font-weight: 600; color: var(--dark);
+    margin-bottom: 3rem; letter-spacing: 0.03em;
+    line-height: 1.4;
+  }
+  /* タイトルの下線アクセント */
+  .section-title-wrap { margin-bottom: 3rem; }
+  .section-title-wrap .section-title { margin-bottom: 0.6rem; }
+  .title-accent {
+    display: inline-block;
+    height: 3px; width: 60px;
+    background: linear-gradient(90deg, var(--green) 0%, var(--yellow) 100%);
+    border-radius: 2px;
+  }
+
+  /* ──────────────────────────
+     ABOUT — 左: テキスト / 右: 数字（Zの流れ維持）
+  ────────────────────────── */
+  #about { background: var(--off-white); }
+  .about-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 4rem; align-items: start; }
+  .about-text p {
+    font-size: 0.95rem; color: var(--text);
+    margin-bottom: 1.3rem; line-height: 2;
+  }
+  .about-text p strong { color: var(--green); font-weight: 700; }
+  .about-story {
+    padding: 1.6rem 1.8rem;
+    background: var(--white);
+    border-left: 3px solid var(--green);
+    border-radius: 0 4px 4px 0;
+    font-size: 0.9rem; color: var(--text-muted);
+    line-height: 2.1; font-style: italic;
+    margin-top: 1.5rem;
+  }
+  .stat-list { display: flex; flex-direction: column; gap: 0; }
+  .stat-item {
+    display: flex; align-items: baseline; gap: 1rem;
+    padding: 1.4rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .stat-item:first-child { border-top: 1px solid var(--border); }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.6rem; color: var(--green); font-weight: 400;
+    line-height: 1; min-width: 88px;
+  }
+  .stat-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+  .stat-desc strong { display: block; color: var(--dark); font-weight: 700; font-size: 0.9rem; margin-bottom: 0.15rem; }
+
+  /* ──────────────────────────
+     SKILLS — 黄色背景で視線を引く
+  ────────────────────────── */
+  #skills { background: var(--white); }
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1.2rem; }
+  .skill-card {
+    padding: 1.7rem 1.5rem;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    transition: all 0.28s;
+  }
+  .skill-card:hover {
+    border-color: var(--green);
+    background: var(--green-pale);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(31,122,48,0.1);
+  }
+  .skill-icon { font-size: 1.5rem; margin-bottom: 0.9rem; }
+  .skill-name { font-size: 0.9rem; font-weight: 700; color: var(--dark); margin-bottom: 0.45rem; }
+  .skill-desc { font-size: 0.78rem; color: var(--text-muted); line-height: 1.75; }
+
+  /* ──────────────────────────
+     WORKS — 交互にZの視線が流れるテーブル
+  ────────────────────────── */
+  #works { background: var(--off-white); }
+  .works-list {
+    display: flex; flex-direction: column; gap: 0;
+    border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+  }
+  .works-header {
+    display: grid; grid-template-columns: 3fr 1fr 1fr;
+    align-items: center; gap: 1.5rem;
+    padding: 0.8rem 2rem;
+    background: var(--green);
+    font-size: 0.72rem; color: rgba(255,255,255,0.85);
+    font-weight: 500; letter-spacing: 0.12em;
+  }
+  .works-header span:last-child { text-align: right; }
+  .work-item {
+    display: grid; grid-template-columns: 3fr 1fr 1fr;
+    align-items: center; gap: 1.5rem;
+    padding: 1.3rem 2rem;
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    transition: background 0.18s;
+  }
+  .work-item:hover { background: var(--green-pale); }
+  .work-title { font-size: 0.9rem; color: var(--dark); font-weight: 400; }
+  .work-genre {
+    font-size: 0.7rem; letter-spacing: 0.1em; color: var(--green);
+    background: var(--green-pale); padding: 4px 10px;
+    border-radius: 3px; text-align: center; white-space: nowrap;
+    font-weight: 500;
+  }
+  .work-rank {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; color: var(--green); text-align: right; font-weight: 400;
+  }
+
+  /* ──────────────────────────
+     SERVICES — 白カード、黄色でフィーチャー強調
+  ────────────────────────── */
+  #services { background: var(--white); }
+  .service-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+  .service-card {
+    padding: 2rem 1.8rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--white);
+    position: relative;
+    transition: all 0.28s;
+  }
+  .service-card:hover {
+    border-color: var(--green-mid);
+    box-shadow: 0 6px 20px rgba(31,122,48,0.1);
+  }
+  .service-card.featured {
+    border-color: var(--green);
+    background: var(--green-pale);
+  }
+  .service-card.featured::before {
+    content: 'おすすめ';
+    position: absolute; top: -1px; left: 1.4rem;
+    background: var(--green); color: #fff;
+    font-size: 0.65rem; font-weight: 500;
+    letter-spacing: 0.15em; padding: 4px 12px;
+    border-radius: 0 0 5px 5px;
+  }
+  .service-name {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1rem; font-weight: 600;
+    color: var(--dark); margin-bottom: 0.7rem;
+  }
+  .service-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.85; margin-bottom: 1.3rem; }
+  .service-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .service-tag {
+    font-size: 0.68rem; padding: 3px 9px;
+    border-radius: 3px;
+    background: var(--yellow-light);
+    color: #3a3000;
+    font-weight: 500; letter-spacing: 0.04em;
+    border: 1px solid rgba(200,180,0,0.2);
+  }
+
+  /* ──────────────────────────
+     CONTACT — 濃い緑背景で締め、左テキスト→右CTAのZ動線
+  ────────────────────────── */
+  #contact { background: var(--dark); }
+  #contact .section-label { color: var(--yellow); }
+  #contact .section-label::before { background: var(--yellow); }
+  #contact .section-title { color: #fff; }
+  .contact-body { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .contact-text { font-size: 0.92rem; color: rgba(255,255,255,0.7); line-height: 2.1; }
+  .contact-text p { margin-bottom: 1rem; }
+  .contact-info { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-row {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1rem 1.4rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 5px;
+    background: rgba(255,255,255,0.04);
+    font-size: 0.85rem; color: #fff;
+  }
+  .contact-row-label {
+    color: var(--yellow); font-size: 0.72rem; font-weight: 500;
+    min-width: 80px; flex-shrink: 0; letter-spacing: 0.05em;
+  }
+  .contact-links { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 2rem; }
+  .contact-link-btn {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    padding: 0.9rem 2rem; text-decoration: none;
+    font-size: 0.82rem; letter-spacing: 0.12em;
+    border-radius: 4px; transition: all 0.28s;
+  }
+  .contact-link-btn.primary {
+    background: var(--yellow); color: var(--dark); font-weight: 700;
+  }
+  .contact-link-btn.primary:hover { background: #f0e020; transform: translateY(-2px); }
+  .contact-link-btn.secondary {
+    background: transparent; color: rgba(255,255,255,0.7);
+    border: 1px solid rgba(255,255,255,0.22);
+  }
+  .contact-link-btn.secondary:hover { background: rgba(255,255,255,0.06); color: #fff; }
+
+  /* FOOTER */
+  footer {
+    padding: 1.8rem 4rem;
+    background: #0A110A;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  footer p { font-size: 0.72rem; color: rgba(255,255,255,0.28); letter-spacing: 0.1em; }
+
+  /* セクション区切り */
+  .section-divider {
+    height: 4px;
+    background: linear-gradient(90deg, var(--green) 0%, var(--yellow) 50%, transparent 100%);
+    opacity: 0.25;
+  }
+
+  /* ──────────────────────────
+     RESPONSIVE
+  ────────────────────────── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1rem; }
+    section { padding: 4rem 1.5rem; }
+
+    .hero {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto auto;
+      padding: 6rem 1.5rem 3rem;
+    }
+    .hero::before { width: 100%; height: 40%; top: auto; bottom: 0; }
+    .hero-left-top { grid-column: 1; grid-row: 2; padding-right: 0; }
+    .hero-right-top {
+      grid-column: 1; grid-row: 1;
+      margin-bottom: 1.5rem;
+    }
+    .hero-left-bottom { grid-column: 1; grid-row: 3; padding-right: 0; }
+    .hero-right-bottom {
+      grid-column: 1; grid-row: 4;
+      align-items: stretch;
+    }
+    .hero-photo-wrap, .hero-photo, .hero-photo-placeholder { width: 200px; height: 200px; }
+
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .contact-body { grid-template-columns: 1fr; gap: 2rem; }
+    .work-item, .works-header { grid-template-columns: 1fr; gap: 0.3rem; }
+    .works-header span:last-child { text-align: left; }
+    .work-rank { text-align: left; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ナビゲーション（Z動線の左端スタート） -->
+<nav>
+  <div class="nav-logo">田島</div>
+  <ul class="nav-links">
+    <li><a href="#about">ABOUT</a></li>
+    <li><a href="#skills">SKILLS</a></li>
+    <li><a href="#works">WORKS</a></li>
+    <li><a href="#services">SERVICES</a></li>
+    <li><a href="#contact">CONTACT</a></li>
+  </ul>
+</nav>
+
+<!-- ============================================================
+     HERO — Zの法則: 左上①→右上②→左下③→右下④
+============================================================ -->
+<section class="hero" id="home">
+
+  <!-- ① 左上: 名前・肩書き -->
+  <div class="hero-left-top">
+    <p class="hero-label">Freelance SEO Writer</p>
+    <h1 class="hero-name">田島</h1>
+    <span class="hero-name-en">Tajima</span>
+  </div>
+
+  <!-- ② 右上: プロフィール写真 -->
+  <div class="hero-right-top">
+    <div class="hero-photo-wrap">
+      <img class="hero-photo" src="my-photo.jpg" alt="田島のプロフィール写真">
+    </div>
+  </div>
+
+  <!-- ③ 左下: キャッチコピー -->
+  <div class="hero-left-bottom">
+    <span class="hero-highlight">難病と向き合いながら5年以上の実績</span>
+    <p class="hero-tagline">
+      <strong>AI×SEOライティング</strong>の力で、<br>
+      読まれるだけでなく<strong>成果につながる記事</strong>を<br>
+      お届けします。
+    </p>
+  </div>
+
+  <!-- ④ 右下: CTA（視線の終着点） -->
+  <div class="hero-right-bottom">
+    <a href="#contact" class="hero-cta">お仕事のご依頼はこちら →</a>
+    <a href="#works" class="hero-cta-sub">実績を見る ↓</a>
+  </div>
+
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ============================================================
+     ABOUT
+============================================================ -->
+<section id="about">
+  <div class="section-inner">
+    <p class="section-label">About</p>
+    <div class="section-title-wrap">
+      <h2 class="section-title">難病と向き合い、文章で生きる道を切り拓いた</h2>
+      <span class="title-accent"></span>
+    </div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p><strong>19歳でクローン病（難病）を発症。</strong>思うように動けない日々の中で、自分にできることを模索し、独学でブログとSEOの世界に足を踏み入れました。</p>
+        <p>WordPressの設定、テーマのカスタマイズ、プラグイン選定、Google AnalyticsとSearch Consoleの運用——すべてを自分の手で学び、試行錯誤してきました。</p>
+        <p>ライティングスクール受講後は<strong>AI（Perplexity・Claude・Geminiなど）を活用した記事執筆</strong>もマスター。現在はスクールで<strong>ライティング講師</strong>も担当しています。</p>
+        <div class="about-story">
+          「好きなこと（アニメ・音楽）を記事にしながら検索1〜5位を積み重ねてきた経験と、AI活用の知見が、どんなジャンルでも活かせる私の強みです。」
+        </div>
+      </div>
+      <div class="stat-list">
+        <div class="stat-item">
+          <div class="stat-num">5+</div>
+          <div class="stat-desc"><strong>年のブログ運営歴</strong>コツコツと積み上げた実績</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">300+</div>
+          <div class="stat-desc"><strong>記事の執筆実績</strong>自メディアで継続更新中</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">3万</div>
+          <div class="stat-desc"><strong>再生／1日（YouTube台本）</strong>担当シナリオが公開翌日に達成</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">TOP5</div>
+          <div class="stat-desc"><strong>検索順位の獲得実績多数</strong>楽器記事では1〜3位を獲得</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ============================================================
+     SKILLS
+============================================================ -->
+<section id="skills">
+  <div class="section-inner">
+    <p class="section-label">Skills</p>
+    <div class="section-title-wrap">
+      <h2 class="section-title">できること・使えるもの</h2>
+      <span class="title-accent"></span>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-icon">📝</div>
+        <div class="skill-name">SEO記事ライティング</div>
+        <div class="skill-desc">キーワード選定〜構成〜執筆まで。検索意図を的確に捉えた記事を作成します。</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🤖</div>
+        <div class="skill-name">AI活用ライティング</div>
+        <div class="skill-desc">Perplexity・Claude・Geminiを駆使。AI×人間の強みを組み合わせた高品質な記事制作が得意です。</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🎬</div>
+        <div class="skill-name">YouTube台本・シナリオ</div>
+        <div class="skill-desc">担当した動画が公開翌日に3万再生を達成。視聴者を引き込む構成力には自信があります。</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🎓</div>
+        <div class="skill-name">ライティング講師</div>
+        <div class="skill-desc">スクールでSEOライティング・AI活用方法を指導。わかりやすく伝える力も強みのひとつです。</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">📊</div>
+        <div class="skill-name">WordPress / SEO運用</div>
+        <div class="skill-desc">Cocoon等のテーマ設定・プラグイン管理・GA4・Search Console連携まで独学で習得。</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🎻</div>
+        <div class="skill-name">音楽・楽器ジャンル</div>
+        <div class="skill-desc">フルート・バイオリン経験者。楽器初心者向け記事は検索1〜3位の実績あり。</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🌿</div>
+        <div class="skill-name">健康・ダイエット</div>
+        <div class="skill-desc">オートミールダイエット案件の執筆経験あり。実体験を交えた説得力のある記事が書けます。</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">💬</div>
+        <div class="skill-name">コミュニケーションツール</div>
+        <div class="skill-desc">Chatwork / Slack / Discord / Gmail / LINE。スムーズなやりとりが可能です。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ============================================================
+     WORKS
+============================================================ -->
+<section id="works">
+  <div class="section-inner">
+    <p class="section-label">Works</p>
+    <div class="section-title-wrap">
+      <h2 class="section-title">執筆・実績の一覧</h2>
+      <span class="title-accent"></span>
+    </div>
+    <div class="works-list">
+      <div class="works-header">
+        <span>記事・コンテンツ</span><span>ジャンル</span><span style="text-align:right">実績・順位</span>
+      </div>
+      <div class="work-item">
+        <div class="work-title">楽器（フルート・バイオリン）初心者向け体験記事</div>
+        <div class="work-genre">音楽・楽器</div>
+        <div class="work-rank">検索 1〜3位</div>
+      </div>
+      <div class="work-item">
+        <div class="work-title">アニメ・漫画・ゲームレビュー・考察記事（自メディア）</div>
+        <div class="work-genre">エンタメ</div>
+        <div class="work-rank">検索 1〜5位</div>
+      </div>
+      <div class="work-item">
+        <div class="work-title">YouTube動画台本・シナリオ制作</div>
+        <div class="work-genre">動画・メディア</div>
+        <div class="work-rank">1日 3万再生</div>
+      </div>
+      <div class="work-item">
+        <div class="work-title">オートミールダイエット商品PR記事</div>
+        <div class="work-genre">健康・美容</div>
+        <div class="work-rank">案件獲得</div>
+      </div>
+      <div class="work-item">
+        <div class="work-title">退職代行サービス解説・比較記事</div>
+        <div class="work-genre">ライフスタイル</div>
+        <div class="work-rank">執筆実績</div>
+      </div>
+      <div class="work-item">
+        <div class="work-title">SEO・AIライティング講義（ライティングスクール）</div>
+        <div class="work-genre">講師・教育</div>
+        <div class="work-rank">担当中</div>
+      </div>
+    </div>
+    <p style="font-size:0.78rem; color: var(--text-muted); margin-top: 1rem; text-align: right;">※ URLや詳細はお問い合わせ時にお伝えします</p>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ============================================================
+     SERVICES
+============================================================ -->
+<section id="services">
+  <div class="section-inner">
+    <p class="section-label">Services</p>
+    <div class="section-title-wrap">
+      <h2 class="section-title">ご依頼いただけること</h2>
+      <span class="title-accent"></span>
+    </div>
+    <div class="service-grid">
+      <div class="service-card featured">
+        <div class="service-name">SEO記事ライティング</div>
+        <div class="service-desc">キーワード選定・構成案・執筆・入稿まで一括対応。AI活用で質とスピードを両立します。</div>
+        <div class="service-tags">
+          <span class="service-tag">WordPress入稿</span>
+          <span class="service-tag">構成案込み</span>
+          <span class="service-tag">AI活用</span>
+          <span class="service-tag">修正対応あり</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-name">記事構成案の作成</div>
+        <div class="service-desc">検索意図を分析し、読者に刺さる見出し構成を提案。構成のみのご依頼も可能です。</div>
+        <div class="service-tags">
+          <span class="service-tag">キーワード分析</span>
+          <span class="service-tag">競合調査</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-name">YouTube台本制作</div>
+        <div class="service-desc">公開翌日3万再生の実績あり。テンポよく視聴者を引き込むシナリオを作成します。</div>
+        <div class="service-tags">
+          <span class="service-tag">シナリオ</span>
+          <span class="service-tag">ナレーション原稿</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-name">PR・案件記事</div>
+        <div class="service-desc">商品・サービスの魅力を自然な文章で伝えるPR記事。薬機法等の配慮も対応可。</div>
+        <div class="service-tags">
+          <span class="service-tag">アフィリエイト</span>
+          <span class="service-tag">案件記事</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CONTACT
+============================================================ -->
+<section id="contact">
+  <div class="section-inner">
+    <p class="section-label">Contact</p>
+    <div class="section-title-wrap">
+      <h2 class="section-title">お仕事のご依頼・ご相談</h2>
+      <span class="title-accent" style="background: linear-gradient(90deg, var(--yellow) 0%, var(--green-light) 100%);"></span>
+    </div>
+    <div class="contact-body">
+      <div class="contact-text">
+        <p>はじめまして、SEOライターの田島です。</p>
+        <p>まずはお気軽にお問い合わせください。ご予算・納期・記事ジャンルなど、どんな些細なことでもご相談いただけます。</p>
+        <p>初回のやりとりはメール・クラウドソーシング・各種チャットツール（Slack / Chatwork / Discord）いずれからでも対応しております。</p>
+        <div class="contact-links">
+          <a href="https://mimi192.hatenablog.com/entry/2025/09/12/092057?_gl=1*1a1ihz6*_gcl_au*MTEwMDQxNzMxNi4xNzc1NDQ2NTcy"
+             target="_blank" rel="noopener"
+             class="contact-link-btn secondary">
+            📓 ポートフォリオブログ（はてな）を見る →
+          </a>
+          <a href="mailto:mimi192.worklife006020@gmail.com"
+             class="contact-link-btn secondary">
+            📧 メールで問い合わせる →
+          </a>
+        </div>
+      </div>
+      <div class="contact-info">
+        <div class="contact-row">
+          <span class="contact-row-label">対応ツール</span>
+          <span>Slack / Chatwork / Discord / Gmail / LINE</span>
+        </div>
+        <div class="contact-row">
+          <span class="contact-row-label">稼働状況</span>
+          <span>受付中（納期はご相談ください）</span>
+        </div>
+        <div class="contact-row">
+          <span class="contact-row-label">得意ジャンル</span>
+          <span>音楽・エンタメ・健康・ライフスタイル</span>
+        </div>
+        <div class="contact-row">
+          <span class="contact-row-label">対応範囲</span>
+          <span>構成〜執筆〜入稿・台本・講師</span>
+        </div>
+        <div class="contact-row">
+          <span class="contact-row-label">AI活用</span>
+          <span>Perplexity / Claude / Gemini</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 田島 — SEO Freelance Writer</p>
+  <p>Crafted with care</p>
+</footer>
+
+</body>
+</html>
