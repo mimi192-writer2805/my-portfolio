@@ -56,14 +56,15 @@
   .hero {
     min-height: 100vh;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: auto 1fr;
     grid-template-rows: auto auto;
     gap: 0;
-    padding: 8rem 4rem 5rem;
+    padding: 8rem 6rem 5rem;
     position: relative;
     overflow: hidden;
     background: var(--white);
     align-items: center;
+    column-gap: 3rem;
   }
   /* 右上の黄色アクセント帯 */
   .hero::before {
@@ -87,8 +88,9 @@
   /* 左上: キャッチコピー（Z動線 ①） */
   .hero-left-top {
     position: relative; z-index: 2;
-    padding-right: 3rem;
-    grid-column: 1; grid-row: 1;
+    padding-left: 7rem;
+    grid-column: 1; grid-row: 1 / 3;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
   }
   .hero-label {
     font-size: 0.7rem; letter-spacing: 0.35em; color: var(--green);
@@ -116,12 +118,10 @@
 
   /* 右上: プロフィール写真（Z動線 ②） */
   .hero-right-top {
-    position: relative; z-index: 2;
-    grid-column: 2; grid-row: 1;
-    display: flex; justify-content: center; align-items: center;
+    display: none;
   }
   .hero-photo-wrap {
-    width: 280px; height: 280px; position: relative;
+    width: 320px; height: 320px; position: relative;
   }
   .hero-photo-wrap::before {
     content: '';
@@ -140,13 +140,13 @@
     z-index: 0;
   }
   .hero-photo {
-    width: 280px; height: 280px; border-radius: 50%;
+    width: 320px; height: 320px; border-radius: 50%;
     object-fit: cover; object-position: center;
     border: 3px solid var(--green-light);
     display: block; position: relative; z-index: 1;
   }
   .hero-photo-placeholder {
-    width: 280px; height: 280px; border-radius: 50%;
+    width: 320px; height: 320px; border-radius: 50%;
     background: var(--green-pale);
     border: 2px dashed var(--green-mid);
     display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -159,12 +159,13 @@
   /* 左下: キャッチコピー詳細（Z動線 ③） */
   .hero-left-bottom {
     position: relative; z-index: 2;
-    grid-column: 1; grid-row: 2;
-    padding-right: 3rem; padding-top: 2rem;
+    grid-column: 2; grid-row: 1;
+    padding-right: 3rem; padding-top: 4rem;
+    display: flex; flex-direction: column; justify-content: flex-end;
   }
   .hero-tagline {
-    font-size: 1rem; color: var(--text); margin-bottom: 1.4rem;
-    font-weight: 300; line-height: 2; max-width: 460px;
+    font-size: 1.35rem; color: var(--text); margin-bottom: 1.4rem;
+    font-weight: 400; line-height: 2.1; max-width: 460px;
   }
   .hero-tagline strong { color: var(--green); font-weight: 700; }
   .hero-highlight {
@@ -183,8 +184,8 @@
     position: relative; z-index: 2;
     grid-column: 2; grid-row: 2;
     display: flex; flex-direction: column;
-    align-items: center; justify-content: flex-start;
-    padding-top: 2rem; gap: 1rem;
+    align-items: flex-start; justify-content: flex-start;
+    padding-top: 1.5rem; gap: 1rem; padding-right: 3rem;
   }
   .hero-cta {
     display: inline-flex; align-items: center; gap: 0.7rem;
@@ -193,14 +194,14 @@
     text-decoration: none; font-size: 0.86rem;
     letter-spacing: 0.15em; font-weight: 500;
     border-radius: 3px; transition: all 0.3s;
-    width: 100%; max-width: 300px; justify-content: center;
+    justify-content: center;
   }
   .hero-cta:hover { background: var(--green-mid); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(31,122,48,0.25); }
   .hero-cta-sub {
     display: inline-flex; align-items: center; gap: 0.5rem;
     font-size: 0.8rem; color: var(--text-muted);
     text-decoration: none; transition: color 0.25s;
-    width: 100%; max-width: 300px; justify-content: center;
+    justify-content: center;
     padding: 0.7rem 2rem;
     border: 1px solid var(--border-strong);
     border-radius: 3px;
@@ -485,18 +486,18 @@
 ============================================================ -->
 <section class="hero" id="home">
 
-  <!-- ① 左上: 名前・肩書き -->
+  <!-- ① 左列: 写真 + 名前 -->
   <div class="hero-left-top">
-    <p class="hero-label">Freelance SEO Writer</p>
-    <h1 class="hero-name">田島</h1>
-    <span class="hero-name-en">Tajima</span>
-  </div>
-
-  <!-- ② 右上: プロフィール写真 -->
-  <div class="hero-right-top">
     <div class="hero-photo-wrap">
       <img class="hero-photo" src="my-photo.jpg" alt="田島のプロフィール写真">
     </div>
+    <p class="hero-label" style="margin-top:1.5rem;">Freelance SEO Writer</p>
+    <h1 class="hero-name" style="text-align:center;">田島</h1>
+    <span class="hero-name-en" style="text-align:center; display:block;">Tajima</span>
+  </div>
+
+  <!-- ② 右上: 非表示（左列に統合） -->
+  <div class="hero-right-top">
   </div>
 
   <!-- ③ 左下: キャッチコピー -->
@@ -511,8 +512,8 @@
 
   <!-- ④ 右下: CTA（視線の終着点） -->
   <div class="hero-right-bottom">
-    <a href="#contact" class="hero-cta">お仕事のご依頼はこちら →</a>
-    <a href="#works" class="hero-cta-sub">実績を見る ↓</a>
+    <a href="#contact" class="hero-cta">お仕事のご依頼はこちら</a>
+    <a href="#works" class="hero-cta-sub">実績を見る</a>
   </div>
 
 </section>
@@ -717,6 +718,18 @@
       </div>
     </div>
   </div>
+<div style="margin-top:2rem; padding:1.6rem 1.8rem; background:var(--green-pale); border-radius:8px; border:1px solid var(--border);">
+        <p style="font-size:0.85rem; font-weight:700; color:var(--green); margin-bottom:1rem;">料金・納期の目安</p>
+        <p style="font-size:0.88rem; color:var(--text); margin-bottom:0.6rem;">📝 文字単価 <strong>4円〜</strong>（内容・ボリュームによりご相談に応じます）</p>
+        <p style="font-size:0.85rem; font-weight:700; color:var(--text); margin:1rem 0 0.5rem;">納期の目安</p>
+        <ul style="font-size:0.83rem; color:var(--text-muted); line-height:2; padding-left:1.2rem;">
+          <li>3,000文字以内：4日以内</li>
+          <li>5,000文字以内：5日以内</li>
+          <li>8,000文字以上：7日以内</li>
+        </ul>
+        <p style="font-size:0.78rem; color:var(--text-muted); margin-top:0.8rem;">※お急ぎの案件にも可能な限り対応いたします。お気軽にご相談ください。</p>
+      </div>
+
 </section>
 
 <!-- ============================================================
@@ -735,7 +748,7 @@
         <p>まずはお気軽にお問い合わせください。ご予算・納期・記事ジャンルなど、どんな些細なことでもご相談いただけます。</p>
         <p>初回のやりとりはメール・クラウドソーシング・各種チャットツール（Slack / Chatwork / Discord）いずれからでも対応しております。</p>
         <div class="contact-links">
-          <a href="https://mimi192.hatenablog.com/entry/2025/09/12/092057?_gl=1*1a1ihz6*_gcl_au*MTEwMDQxNzMxNi4xNzc1NDQ2NTcy"
+          <a href="ここにはてなブログのURLを入れてください"
              target="_blank" rel="noopener"
              class="contact-link-btn secondary">
             📓 ポートフォリオブログ（はてな）を見る →
@@ -743,6 +756,11 @@
           <a href="mailto:mimi192.worklife006020@gmail.com"
              class="contact-link-btn secondary">
             📧 メールで問い合わせる →
+          </a>
+<a href="https://crowdworks.jp/public/employees/6426867?ref=from_mobile_slide_menu"
+             target="_blank" rel="noopener"
+             class="contact-link-btn secondary">
+            💼 クラウドワークスで依頼する →
           </a>
         </div>
       </div>
